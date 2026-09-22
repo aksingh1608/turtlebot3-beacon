@@ -2,6 +2,90 @@
 
 Beacon is a vision guided TurtleBot3 simulation. A Waffle Pi in Gazebo Classic looks for a red cylinder with its camera, turns until the cylinder sits in the centre of the frame, drives towards it and stops in front of it. Ten scripted trials place the marker at different distances and bearings, two of them partly hidden behind a box, and a logger records every run for analysis.
 
+## Pictures from the run
+
+Five trials reached the marker. The plots and the screenshots from that run are below. How to run it is under Run it.
+
+### Paths
+
+![top down paths](docs/figures/paths_topdown.png)
+
+The room, the two boxes, every marker, and the path of each trial.
+
+### Time to reach
+
+![time to reach](docs/figures/time_to_reach.png)
+
+Time to STOP for each trial. A miss is marked as a failure.
+
+### State timeline
+
+![state timeline](docs/figures/state_timeline.png)
+
+SEARCH, ALIGN, APPROACH, and STOP for each trial.
+
+### Offset
+
+![offset versus time](docs/figures/offset_vs_time.png)
+
+Horizontal offset of each trial. The shaded band is the centre tolerance.
+
+### Results image
+
+![results figure](docs/figures/results_table.png)
+
+The same results table drawn as a figure.
+
+### Gazebo
+
+![gazebo room](docs/screenshots/gazebo_room.png)
+
+The room, both boxes, and the robot. The red marker is in the model list. The lidar fan covers the centre of the view.
+
+### RViz
+
+![rviz overview](docs/screenshots/rviz_overview.png)
+
+Laser scan of the walls, the robot model, and the path display, with global status ok.
+
+### Debug image in each state
+
+![debug search](docs/screenshots/debug_search.png)
+
+SEARCH.
+
+![debug align](docs/screenshots/debug_align.png)
+
+ALIGN.
+
+![debug approach](docs/screenshots/debug_approach.png)
+
+APPROACH.
+
+![debug stop](docs/screenshots/debug_stop.png)
+
+STOP.
+
+### Topic list
+
+![topic list](docs/screenshots/topic_list.png)
+
+Topics while the simulation was running, including `/camera/image_raw`, `/scan`, `/odom`, and the `/beacon` topics. The cropped terminal also shows the start of the camera rate.
+
+### Camera rate
+
+![camera rate](docs/screenshots/camera_hz.png)
+
+`/camera/image_raw` published at about 28 frames a second.
+
+### Results printout
+
+![results printout](docs/screenshots/results_table.png)
+
+`beacon/trials/results.csv` printed in the container after the ten trials.
+
+## Run it
+
 You need Docker and a desktop session. Clone this repo, then run the blocks below from the repo root. Longer notes are in [docs/DOCKER_SETUP.md](docs/DOCKER_SETUP.md).
 
 ### 1. Build the image
@@ -208,92 +292,6 @@ Success rate 50%. Mean time to reach 14.9 s, max 26.9 s. Mean final range on a r
 ## Trials
 
 `beacon/trials/positions.csv` holds ten marker positions drawn with seed 42: distances from 1.0 to 2.5 m, bearings spread around the full circle so eight trials start with the marker out of view, and two trials (9 and 10) with the marker half hidden behind a box. `scripts/run_trial.sh N` runs one trial and prints its `results.csv` row. The protocol, the success rule and the column definitions are in [docs/trial_protocol.md](docs/trial_protocol.md).
-
-## Figures
-
-`python3 scripts/analyze_trials.py` reads `results.csv` and the per trial logs and writes these images to `docs/figures`. It also prints the success rate, the mean and max time to reach, and the mean final range.
-
-### Paths
-
-![top down paths](docs/figures/paths_topdown.png)
-
-The room, the two boxes, every marker, and the path of each trial.
-
-### Time to reach
-
-![time to reach](docs/figures/time_to_reach.png)
-
-Time to STOP for each trial. A miss is marked as a failure.
-
-### State timeline
-
-![state timeline](docs/figures/state_timeline.png)
-
-SEARCH, ALIGN, APPROACH, and STOP for each trial.
-
-### Offset
-
-![offset versus time](docs/figures/offset_vs_time.png)
-
-Horizontal offset of each trial. The shaded band is the centre tolerance.
-
-### Results image
-
-![results figure](docs/figures/results_table.png)
-
-The same results table drawn as a figure.
-
-## Screenshots
-
-Taken on the host during the container run. The four debug images are trial 1 frames chosen by `scripts/pick_frames.py`.
-
-### Gazebo
-
-![gazebo room](docs/screenshots/gazebo_room.png)
-
-The room, both boxes, and the robot. The red marker is in the model list. The lidar fan covers the centre of the view.
-
-### RViz
-
-![rviz overview](docs/screenshots/rviz_overview.png)
-
-Laser scan of the walls, the robot model, and the path display, with global status ok.
-
-### Debug image in each state
-
-![debug search](docs/screenshots/debug_search.png)
-
-SEARCH.
-
-![debug align](docs/screenshots/debug_align.png)
-
-ALIGN.
-
-![debug approach](docs/screenshots/debug_approach.png)
-
-APPROACH.
-
-![debug stop](docs/screenshots/debug_stop.png)
-
-STOP.
-
-### Topic list
-
-![topic list](docs/screenshots/topic_list.png)
-
-Topics while the simulation was running, including `/camera/image_raw`, `/scan`, `/odom`, and the `/beacon` topics.
-
-### Camera rate
-
-![camera rate](docs/screenshots/camera_hz.png)
-
-`/camera/image_raw` published at about 28 frames a second.
-
-### Results printout
-
-![results printout](docs/screenshots/results_table.png)
-
-`beacon/trials/results.csv` printed in the container after the ten trials.
 
 ## Tests
 
