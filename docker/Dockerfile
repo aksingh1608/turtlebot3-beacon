@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-matplotlib \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /ws/src
+RUN mkdir -p /ws/src && chmod 777 /ws
 WORKDIR /ws
 
 COPY beacon_env.sh /opt/beacon_env.sh
