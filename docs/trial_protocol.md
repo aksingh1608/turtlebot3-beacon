@@ -19,7 +19,7 @@ Bearing is measured from the robot's initial heading, positive to the left. The 
 | 9 | 1.421 | 1.552 | 2.104 | 47.5 | out of view, half hidden by box 1 | detection of a partly hidden marker |
 | 10 | -1.784 | -1.751 | 2.500 | -135.5 | out of view, half hidden by box 2 | occlusion plus the longest distance |
 
-Trials 9 and 10 sit on the ray through the edge of a box seen from the origin, so about half the cylinder is hidden at the start. Whether the visible half exceeds `min_area_px` from 2.1 to 2.5 m is the point of those trials. CONFIRM IN ROSJECT with a screenshot of the debug image at the start of trial 9.
+Trials 9 and 10 sit on the ray through the edge of a box seen from the origin, so about half the cylinder is hidden at the start. Whether the visible half exceeds `min_area_px` from 2.1 to 2.5 m is the point of those trials. CONFIRM IN SIM with a screenshot of the debug image at the start of trial 9.
 
 ## Running a trial
 
