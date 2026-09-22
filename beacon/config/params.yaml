@@ -1,0 +1,97 @@
+# Every tunable value for Beacon lives here. Node sections are read by ROS 2.
+# The beacon_shared section is read by spawn_marker and analyze_trials.py.
+
+detector_node:
+  ros__parameters:
+    image_topic: /camera/image_raw
+    qos_depth: 10
+    # Red hue bands in OpenCV units (0 to 179). Red wraps around zero.
+    h_low1: 0
+    h_high1: 10
+    h_low2: 170
+    h_high2: 179
+    s_min: 120
+    v_min: 70
+    morph_kernel: 5
+    min_area_px: 150
+    center_tol: 0.10
+    log_period_s: 1.0
+    fps_window: 30
+    # Frame saving. Empty save_dir means <trials_dir>/frames.
+    save_frames: false
+    save_dir: ""
+    save_period_s: 1.0
+    trials_dir: ""
+    # Debug image layout. Colours are BGR.
+    debug_top_px: 40
+    debug_bottom_px: 40
+    debug_margin_px: 12
+    debug_font_scale: 0.55
+    debug_font_thickness: 1
+    debug_line_px: 2
+    debug_dot_px: 5
+    debug_band_alpha: 0.35
+    debug_color_contour: [0, 255, 0]
+    debug_color_centroid: [0, 255, 255]
+    debug_color_bbox: [255, 200, 0]
+    debug_color_centre_line: [255, 255, 255]
+    debug_color_band: [120, 120, 120]
+    debug_color_text: [255, 255, 255]
+    debug_color_strip: [30, 30, 30]
+    debug_color_bar: [200, 200, 200]
+    debug_color_bar_marker: [0, 0, 255]
+
+controller_node:
+  ros__parameters:
+    control_hz: 10.0
+    qos_depth: 10
+    lost_timeout_s: 1.0
+    search_speed: 0.3
+    center_tol: 0.10
+    k_ang: 1.0
+    max_ang: 0.8
+    forward_speed: 0.15
+    approach_gain: 0.5
+    stop_area: 0.12
+    stop_range_m: 0.35
+    trial_timeout_s: 60.0
+    front_cone_deg: 15.0
+
+trial_logger_node:
+  ros__parameters:
+    log_hz: 10.0
+    qos_depth: 10
+    trials_dir: ""
+    path_max_poses: 6000
+    json_retry_s: 0.5
+    json_retries: 10
+    front_cone_deg: 15.0
+
+beacon_shared:
+  ros__parameters:
+    # Room and obstacle geometry. Must match worlds/beacon_room.world.
+    room_size_m: 6.0
+    wall_thickness_m: 0.2
+    wall_height_m: 0.5
+    box_size_m: 0.4
+    box1_x: 1.0
+    box1_y: 0.8
+    box2_x: -1.2
+    box2_y: -0.9
+    marker_radius_m: 0.075
+    marker_height_m: 0.3
+    # Waffle Pi camera horizontal field of view. CONFIRM IN ROSJECT.
+    camera_hfov_deg: 62.2
+    # Trial position generator.
+    n_trials: 10
+    occluded_trials: 2
+    dist_min_m: 1.0
+    dist_max_m: 2.5
+    clearance_m: 0.4
+    occlusion_extra_dist_min_m: 0.8
+    occlusion_extra_dist_max_m: 1.1
+    default_seed: 42
+    # spawn_marker timing
+    spawn_settle_s: 1.0
+    service_timeout_s: 10.0
+    marker_entity_name: red_marker

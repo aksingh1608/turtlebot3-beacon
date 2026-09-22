@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" font-family="Helvetica, Arial, sans-serif" font-size="12">
+  <title>Beacon controller states</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1c5cab"/>
+    </marker>
+  </defs>
+  <style>
+    .state { fill: #ffffff; stroke: #1c5cab; stroke-width: 1.5; }
+    .final { fill: #eef3fb; stroke: #1c5cab; stroke-width: 1.5; }
+    .name { font-size: 14px; font-weight: bold; fill: #0b0b0b; }
+    .action { font-size: 11px; fill: #52514e; }
+    .cond { font-size: 11px; fill: #1c5cab; }
+    .arrow { stroke: #1c5cab; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+    .muted { fill: #52514e; font-size: 11px; }
+  </style>
+  <rect width="900" height="420" fill="#fcfcfb"/>
+
+  <!-- start -->
+  <circle cx="60" cy="150" r="6" fill="#1c5cab"/>
+  <path class="arrow" d="M 66 150 L 118 150"/>
+  <text class="cond" x="60" y="135">new trial id</text>
+
+  <!-- SEARCH -->
+  <rect class="state" x="120" y="120" width="150" height="60" rx="6"/>
+  <text class="name" x="195" y="145" text-anchor="middle">SEARCH</text>
+  <text class="action" x="195" y="165" text-anchor="middle">angular = search_speed</text>
+
+  <!-- ALIGN -->
+  <rect class="state" x="370" y="120" width="150" height="60" rx="6"/>
+  <text class="name" x="445" y="145" text-anchor="middle">ALIGN</text>
+  <text class="action" x="445" y="165" text-anchor="middle">angular = clip(-k_ang * offset)</text>
+
+  <!-- APPROACH -->
+  <rect class="state" x="620" y="120" width="150" height="60" rx="6"/>
+  <text class="name" x="695" y="145" text-anchor="middle">APPROACH</text>
+  <text class="action" x="695" y="165" text-anchor="middle">linear = forward_speed</text>
+
+  <!-- STOP -->
+  <rect class="final" x="620" y="300" width="150" height="60" rx="6"/>
+  <text class="name" x="695" y="325" text-anchor="middle">STOP</text>
+  <text class="action" x="695" y="345" text-anchor="middle">zero velocity, latched</text>
+
+  <!-- TIMEOUT -->
+  <rect class="final" x="370" y="300" width="150" height="60" rx="6"/>
+  <text class="name" x="445" y="325" text-anchor="middle">TIMEOUT</text>
+  <text class="action" x="445" y="345" text-anchor="middle">zero velocity, failure logged</text>
+
+  <!-- SEARCH to ALIGN -->
+  <path class="arrow" d="M 270 140 L 368 140"/>
+  <text class="cond" x="319" y="112" text-anchor="middle">marker found</text>
+
+  <!-- ALIGN to APPROACH -->
+  <path class="arrow" d="M 520 140 L 618 140"/>
+  <text class="cond" x="569" y="112" text-anchor="middle">|offset| &lt;= center_tol</text>
+
+  <!-- APPROACH back to ALIGN -->
+  <path class="arrow" d="M 618 165 L 520 165"/>
+  <text class="cond" x="569" y="196" text-anchor="middle">|offset| &gt; center_tol</text>
+
+  <!-- ALIGN back to SEARCH -->
+  <path class="arrow" d="M 368 165 L 270 165"/>
+  <text class="cond" x="319" y="196" text-anchor="middle">no marker for lost_timeout_s</text>
+
+  <!-- APPROACH to SEARCH (lost) -->
+  <path class="arrow" d="M 695 120 C 695 60 195 60 195 118"/>
+  <text class="cond" x="445" y="68" text-anchor="middle">no marker for lost_timeout_s</text>
+
+  <!-- APPROACH to STOP -->
+  <path class="arrow" d="M 695 180 L 695 298"/>
+  <text class="cond" x="703" y="230">area_frac &gt;= stop_area</text>
+  <text class="cond" x="703" y="245">or front range &lt;= stop_range_m</text>
+
+  <!-- ALIGN to STOP (range) -->
+  <path class="arrow" d="M 445 180 L 640 298"/>
+  <text class="cond" x="500" y="255">front range &lt;= stop_range_m</text>
+
+  <!-- to TIMEOUT from active states -->
+  <path class="arrow" d="M 195 180 C 195 330 300 330 368 330"/>
+  <text class="cond" x="250" y="232">trial_timeout_s elapsed</text>
+  <text class="cond" x="250" y="247">in SEARCH, ALIGN or APPROACH</text>
+
+  <!-- STOP back to SEARCH on new trial -->
+  <path class="arrow" d="M 695 360 C 695 400 100 400 100 200 C 100 190 110 180 140 180"/>
+  <text class="cond" x="400" y="392" text-anchor="middle">new trial id on /beacon/trial (also from TIMEOUT)</text>
+
+  <text class="muted" x="800" y="405" text-anchor="end">All thresholds live in config/params.yaml</text>
+</svg>
