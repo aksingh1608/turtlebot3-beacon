@@ -75,7 +75,7 @@ Logs and `results.csv` land in `beacon/trials` inside the repo.
 
 ## 6. Settings to confirm in the sim
 
-These values were chosen to match the Waffle Pi model. Check them once inside the container. Change `config/params.yaml` or the launch argument only if the command shows a different value.
+Checked in the running container. The camera topic is `/camera/image_raw`. `horizontal_fov` is 1.085595 rad, which is 62.2 degrees. The image is 640 by 480. `/clock` is in the topic list. Scan `angle_min`, the three Gazebo services, and trial 9 still need the checks in the last rows.
 
 | Setting | Current value | Command that confirms it | If it differs |
 |---|---|---|---|

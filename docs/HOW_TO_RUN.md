@@ -60,7 +60,7 @@ ros2 topic list
 ros2 topic hz /camera/image_raw
 ```
 
-CONFIRM IN SIM: the Waffle Pi camera in turtlebot3_gazebo publishes on `/camera/image_raw`. If the list shows a different name (for example `/camera/image_raw/compressed` only, or a namespaced topic), restart with:
+Checked in this image: the camera publishes on `/camera/image_raw`, the field of view is 62.2 degrees, and the image is 640 by 480. If a later install shows a different topic name, restart with:
 
 ```
 ros2 launch beacon sim.launch.py rviz:=true image_topic:=/your/topic/name

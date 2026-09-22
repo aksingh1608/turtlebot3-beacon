@@ -80,7 +80,7 @@ beacon_shared:
     box2_y: -0.9
     marker_radius_m: 0.075
     marker_height_m: 0.3
-    # Waffle Pi camera horizontal field of view. CONFIRM IN SIM.
+    # Waffle Pi camera. Checked in the Humble image: horizontal_fov 1.085595 rad, image 640 by 480.
     camera_hfov_deg: 62.2
     # Trial position generator.
     n_trials: 10
