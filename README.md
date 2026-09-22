@@ -68,7 +68,7 @@ STOP.
 
 ### Topic list
 
-![topic list](docs/screenshots/topic_list.png)
+![topic list](docs/screenshots/topic_list.png?v=2)
 
 Topics while the simulation was running, including `/camera/image_raw`, `/scan`, `/odom`, and the `/beacon` topics. The cropped terminal also shows the start of the camera rate.
 
