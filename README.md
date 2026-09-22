@@ -188,20 +188,22 @@ All of them live in `beacon/config/params.yaml`. The table below is the output o
 
 ## Results
 
-Pending. Fill this table from the printout of `scripts/run_all_trials.sh` after the ten trials finish.
+One run of `scripts/run_all_trials.sh` in the container. Five trials reached the marker. The figure script keeps the last row of a trial, so the two early trial 3 rows in `results.csv` are not in this table.
 
 | Trial | Reached | Time s | Final range m | Path m |
 |---|---|---|---|---|
-| 1 | pending | pending | pending | pending |
-| 2 | pending | pending | pending | pending |
-| 3 | pending | pending | pending | pending |
-| 4 | pending | pending | pending | pending |
-| 5 | pending | pending | pending | pending |
-| 6 | pending | pending | pending | pending |
-| 7 | pending | pending | pending | pending |
-| 8 | pending | pending | pending | pending |
-| 9 | pending | pending | pending | pending |
-| 10 | pending | pending | pending | pending |
+| 1 | 1 | 8.00 | 0.679 | 1.077 |
+| 2 | 0 |  | 3.112 | 0.034 |
+| 3 | 1 | 13.20 | 0.686 | 1.202 |
+| 4 | 0 |  | 3.104 | 0.034 |
+| 5 | 1 | 13.30 | 0.699 | 0.455 |
+| 6 | 0 |  | 3.155 | 0.034 |
+| 7 | 1 | 26.90 | 0.667 | 1.418 |
+| 8 | 1 | 13.00 | 0.695 | 1.771 |
+| 9 | 0 |  | 3.101 | 0.034 |
+| 10 | 0 |  | 3.101 | 0.034 |
+
+Success rate 50%. Mean time to reach 14.9 s, max 26.9 s. Mean final range on a reach 0.69 m.
 
 ## Trials
 
