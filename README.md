@@ -2,6 +2,65 @@
 
 Beacon is a vision guided TurtleBot3 simulation. A Waffle Pi in Gazebo Classic looks for a red cylinder with its camera, turns until the cylinder sits in the centre of the frame, drives towards it and stops in front of it. Ten scripted trials place the marker at different distances and bearings, two of them partly hidden behind a box, and a logger records every run for analysis.
 
+You need Docker and a desktop session. Clone this repo, then run the blocks below from the repo root. Longer notes are in [docs/DOCKER_SETUP.md](docs/DOCKER_SETUP.md).
+
+### 1. Build the image
+
+About 15 to 30 minutes the first time.
+
+```
+docker build -f docker/Dockerfile -t beacon:humble docker
+```
+
+### 2. Start the container
+
+About one minute.
+
+```
+docker/run.sh
+```
+
+The shell is now inside the container. The repo is at `/ws/src/turtlebot3-beacon`. On the host, `docker/exec.sh` opens a second shell in the same container.
+
+### 3. Build the workspace
+
+Inside the container. About one minute.
+
+```
+cd /ws
+colcon build --symlink-install --packages-select beacon
+source /opt/beacon_env.sh
+```
+
+### 4. Launch the simulation
+
+About one minute until Gazebo and RViz are up.
+
+```
+cd /ws/src/turtlebot3-beacon
+ros2 launch beacon sim.launch.py rviz:=true
+```
+
+### 5. Run all ten trials
+
+In the second shell (`docker/exec.sh`). Up to about ten minutes.
+
+```
+cd /ws/src/turtlebot3-beacon
+scripts/run_all_trials.sh
+```
+
+### 6. Make the figures and pick the debug frames
+
+In that same second shell. Under one minute.
+
+```
+python3 scripts/analyze_trials.py
+python3 scripts/pick_frames.py
+```
+
+Figures go to `docs/figures`. Debug frames go to `docs/screenshots`. The moments to photograph by hand are in [docs/screenshot_list.md](docs/screenshot_list.md). Camera checks and troubleshooting are in [docs/HOW_TO_RUN.md](docs/HOW_TO_RUN.md).
+
 ## Assignment mapping
 
 | Part | What Beacon does | Where |
@@ -127,15 +186,22 @@ All of them live in `beacon/config/params.yaml`. The table below is the output o
 | /beacon/path | nav_msgs/Path | logger to RViz |
 | /reset_world, /delete_entity, /spawn_entity | services | spawn_marker to Gazebo |
 
-## Run it
+## Results
 
-```
-cd ~/ros2_ws && colcon build --symlink-install && source install/setup.bash && export TURTLEBOT3_MODEL=waffle_pi
-ros2 launch beacon sim.launch.py rviz:=true
-scripts/run_trial.sh 1
-```
+Pending. Fill this table from the printout of `scripts/run_all_trials.sh` after the ten trials finish.
 
-Full instructions, including the camera topic check and troubleshooting, are in [docs/HOW_TO_RUN.md](docs/HOW_TO_RUN.md).
+| Trial | Reached | Time s | Final range m | Path m |
+|---|---|---|---|---|
+| 1 | pending | pending | pending | pending |
+| 2 | pending | pending | pending | pending |
+| 3 | pending | pending | pending | pending |
+| 4 | pending | pending | pending | pending |
+| 5 | pending | pending | pending | pending |
+| 6 | pending | pending | pending | pending |
+| 7 | pending | pending | pending | pending |
+| 8 | pending | pending | pending | pending |
+| 9 | pending | pending | pending | pending |
+| 10 | pending | pending | pending | pending |
 
 ## Trials
 
@@ -166,6 +232,7 @@ The vision tests use synthetic images and need no ROS.
 
 ```
 beacon/            ROS 2 package (ament_python): nodes, launch, world, model, config, trials, tests
-scripts/           run_trial.sh and analyze_trials.py
-docs/              HOW_TO_RUN.md, trial_protocol.md, diagrams, figures, screenshots
+docker/            Humble image, start script, second shell script
+scripts/           run_all_trials.sh, run_trial.sh, analyze_trials.py, pick_frames.py
+docs/              DOCKER_SETUP.md, HOW_TO_RUN.md, trial_protocol.md, diagrams, figures, screenshots
 ```
