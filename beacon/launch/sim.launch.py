@@ -98,7 +98,7 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='true'),
         DeclareLaunchArgument('image_topic', default_value='/camera/image_raw'),
         DeclareLaunchArgument('trials_dir', default_value='',
-                              description='empty means <share>/beacon/trials'),
+                              description='empty means the source tree trials folder'),
         DeclareLaunchArgument('params_file',
                               default_value=os.path.join(pkg_beacon, 'config', 'params.yaml')),
         OpaqueFunction(function=setup),
