@@ -18,6 +18,7 @@ from std_msgs.msg import String
 from beacon.ros_util import (T, declare_typed, front_range, latched_qos, now_s,
                              read_params, yaw_from_quaternion)
 from beacon.spawn_marker import resolve_trials_dir
+from beacon.trial_rules import has_trial_id
 
 SPEC = {
     'log_hz': T.DOUBLE, 'qos_depth': T.INTEGER, 'trials_dir': T.STRING,
@@ -80,6 +81,9 @@ class TrialLoggerNode(Node):
         self.finished = False
 
     def on_trial(self, msg):
+        if not has_trial_id(msg.data):
+            self.get_logger().warn('ignoring blank trial id')
+            return
         if msg.data == self.trial_id and not self.finished:
             return
         self.close_log()
@@ -145,7 +149,10 @@ class TrialLoggerNode(Node):
         self.state = msg.data
         if self.state in ('STOP', 'TIMEOUT') and not self.finished:
             self.finished = True
-            self.write_result(t)
+            if has_trial_id(self.trial_id):
+                self.write_result(t)
+            else:
+                self.get_logger().info('no trial id, results row skipped')
 
     def on_tick(self):
         if self.pose is None:
@@ -178,6 +185,9 @@ class TrialLoggerNode(Node):
         self.log_file.flush()
 
     def write_result(self, t):
+        if not has_trial_id(self.trial_id):
+            self.get_logger().info('no trial id, results row skipped')
+            return
         reached = self.state == 'STOP'
         elapsed = t - self.trial_start_s
         row = {

@@ -16,6 +16,7 @@ from std_msgs.msg import String
 
 from beacon.ros_util import (T, declare_typed, front_range, latched_qos, now_s,
                              read_params, zero_twist)
+from beacon.trial_rules import has_trial_id, timeout_due
 
 SPEC = {
     'control_hz': T.DOUBLE, 'qos_depth': T.INTEGER,
@@ -63,6 +64,8 @@ class ControllerNode(Node):
         self.front = front_range(msg, float(self.p['front_cone_deg']))
 
     def on_trial(self, msg):
+        if not has_trial_id(msg.data):
+            return
         if msg.data == self.trial_id and self.state not in ('STOP', 'TIMEOUT'):
             return
         self.trial_id = msg.data
@@ -91,7 +94,7 @@ class ControllerNode(Node):
         if self.state not in ('STOP', 'TIMEOUT'):
             elapsed = t - self.trial_start_s
             seen_now = self.found or self.marker_recent(t)
-            if elapsed >= float(self.p['trial_timeout_s']):
+            if timeout_due(self.trial_id, elapsed, self.p['trial_timeout_s']):
                 self.get_logger().error('trial %s failed: %.0f s without STOP' % (
                     self.trial_id, elapsed))
                 self.set_state('TIMEOUT')

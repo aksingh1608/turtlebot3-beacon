@@ -1,0 +1,2 @@
+trial,marker_x,marker_y,bearing_deg,occluded,first_seen_s,reached,time_to_reach_s,final_range_m,path_length_m,search_time_s,align_time_s,approach_time_s
+1,1.732,0.3,9.8,0,0.10,1,8.00,0.675,1.082,0.20,0.50,7.30

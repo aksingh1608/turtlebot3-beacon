@@ -2,7 +2,11 @@
 # Run one Beacon trial: spawn the marker, wait for STOP or TIMEOUT, print the result row.
 #
 # Usage:   scripts/run_trial.sh N
-# All ten: for n in $(seq 1 10); do scripts/run_trial.sh "$n"; done
+#          scripts/run_trial.sh --fresh 1
+# All ten: scripts/run_all_trials.sh
+#
+# --fresh is only valid with trial 1. It keeps the results.csv header
+# and removes the log csv files before that trial.
 #
 # Environment overrides:
 #   BEACON_WS          workspace root, default ~/ros2_ws
@@ -14,19 +18,34 @@
 
 set -euo pipefail
 
-N="${1:-}"
+FRESH=0
+N=""
+for arg in "$@"; do
+  case "$arg" in
+    --fresh) FRESH=1 ;;
+    *) N="$arg" ;;
+  esac
+done
 if [ -z "$N" ]; then
-  echo "usage: $0 N    (N is the trial number in positions.csv)"
+  echo "usage: $0 [--fresh] N    (N is the trial number in positions.csv)"
+  exit 1
+fi
+if [ "$FRESH" = 1 ] && [ "$N" != 1 ]; then
+  echo "--fresh is only used with trial 1"
   exit 1
 fi
 
 WS="${BEACON_WS:-$HOME/ros2_ws}"
 WAIT_S="${BEACON_WAIT_S:-90}"
 
+# Humble setup reads AMENT_TRACE_SETUP_FILES before it exists.
+# nounset must be off for those two lines only.
+set +u
 # shellcheck disable=SC1091
 source /opt/ros/humble/setup.bash
 # shellcheck disable=SC1091
 source "$WS/install/setup.bash"
+set -u
 
 # Same default as the nodes: the source tree trials folder, not the install prefix.
 if [ -n "${BEACON_TRIALS_DIR:-}" ]; then
@@ -37,6 +56,17 @@ else
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     TRIALS_DIR="$(cd "$SCRIPT_DIR/../beacon/trials" && pwd)"
   fi
+fi
+
+if [ "$FRESH" = 1 ]; then
+  mkdir -p "$TRIALS_DIR/logs"
+  rm -f "$TRIALS_DIR/logs/"*.csv
+  RESULTS="$TRIALS_DIR/results.csv"
+  if [ -f "$RESULTS" ]; then
+    head -n 1 "$RESULTS" > "$RESULTS.tmp"
+    mv "$RESULTS.tmp" "$RESULTS"
+  fi
+  echo "== cleared logs and kept the results header in $TRIALS_DIR"
 fi
 
 echo "== trial $N (trials dir: $TRIALS_DIR)"
@@ -56,7 +86,7 @@ final=""
 last_shown=""
 while [ "$(date +%s)" -lt "$deadline" ]; do
   sleep 0.5
-  last="$(grep -E '^data: ' "$STATE_LOG" | tail -n 1 | sed 's/^data: //')"
+  last="$(grep -E '^data: ' "$STATE_LOG" | tail -n 1 | sed 's/^data: //' || true)"
   if [ -n "$last" ] && [ "$last" != "$last_shown" ]; then
     echo "   state: $last"
     last_shown="$last"

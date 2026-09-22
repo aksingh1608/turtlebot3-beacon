@@ -33,34 +33,86 @@ Offset is (cx - W/2) / (W/2), so it runs from -1 at the left edge to +1 at the r
 
 ## Parameters
 
-All of them live in `beacon/config/params.yaml`.
+All of them live in `beacon/config/params.yaml`. The table below is the output of `scripts/params_table.py`. From the repo root, `python3 scripts/params_table.py` prints it again.
 
-| Parameter | Default | Used by | Meaning |
-|---|---|---|---|
-| image_topic | /camera/image_raw | detector | camera topic |
-| h_low1, h_high1 | 0, 10 | detector | first red hue band (OpenCV 0 to 179) |
-| h_low2, h_high2 | 170, 179 | detector | second red hue band |
-| s_min, v_min | 120, 70 | detector | saturation and value floors |
-| morph_kernel | 5 | detector | open then close kernel size in pixels |
-| min_area_px | 150 | detector | smallest contour accepted |
-| center_tol | 0.10 | controller, detector | centre band half width in offset units |
-| control_hz | 10.0 | controller | command rate |
-| lost_timeout_s | 1.0 | controller | seconds without the marker before SEARCH |
-| search_speed | 0.3 | controller | SEARCH turn rate in rad/s |
-| k_ang | 1.0 | controller | ALIGN gain |
-| max_ang | 0.8 | controller | ALIGN angular limit in rad/s |
-| forward_speed | 0.15 | controller | APPROACH speed in m/s |
-| approach_gain | 0.5 | controller | fraction of k_ang used while driving |
-| stop_area | 0.12 | controller | area fraction that triggers STOP |
-| stop_range_m | 0.35 | controller | LiDAR range that triggers STOP |
-| trial_timeout_s | 60.0 | controller | failure deadline |
-| front_cone_deg | 15.0 | controller, logger | half angle of the front LiDAR cone |
-| log_hz | 10.0 | logger | log row rate |
-| save_frames, save_dir | false, empty | detector | write debug PNGs on state changes |
-| box1_x, box1_y, box2_x, box2_y | 1.0, 0.8, -1.2, -0.9 | spawn_marker, analysis | occlusion box centres |
-| dist_min_m, dist_max_m | 1.0, 2.5 | spawn_marker | marker distance range |
-| clearance_m | 0.4 | spawn_marker | minimum gap to walls and boxes |
-| default_seed | 42 | spawn_marker | seed for positions.csv |
+| Parameter | Default | Section |
+|---|---|---|
+| image_topic | /camera/image_raw | detector_node |
+| qos_depth | 10 | detector_node |
+| h_low1 | 0 | detector_node |
+| h_high1 | 10 | detector_node |
+| h_low2 | 170 | detector_node |
+| h_high2 | 179 | detector_node |
+| s_min | 120 | detector_node |
+| v_min | 70 | detector_node |
+| morph_kernel | 5 | detector_node |
+| min_area_px | 150 | detector_node |
+| center_tol | 0.1 | detector_node |
+| log_period_s | 1 | detector_node |
+| fps_window | 30 | detector_node |
+| save_frames | false | detector_node |
+| save_dir | "" | detector_node |
+| save_period_s | 1 | detector_node |
+| trials_dir | "" | detector_node |
+| debug_top_px | 40 | detector_node |
+| debug_bottom_px | 40 | detector_node |
+| debug_margin_px | 12 | detector_node |
+| debug_font_scale | 0.55 | detector_node |
+| debug_font_thickness | 1 | detector_node |
+| debug_line_px | 2 | detector_node |
+| debug_dot_px | 5 | detector_node |
+| debug_band_alpha | 0.35 | detector_node |
+| debug_color_contour | [0, 255, 0] | detector_node |
+| debug_color_centroid | [0, 255, 255] | detector_node |
+| debug_color_bbox | [255, 200, 0] | detector_node |
+| debug_color_centre_line | [255, 255, 255] | detector_node |
+| debug_color_band | [120, 120, 120] | detector_node |
+| debug_color_text | [255, 255, 255] | detector_node |
+| debug_color_strip | [30, 30, 30] | detector_node |
+| debug_color_bar | [200, 200, 200] | detector_node |
+| debug_color_bar_marker | [0, 0, 255] | detector_node |
+| control_hz | 10 | controller_node |
+| qos_depth | 10 | controller_node |
+| lost_timeout_s | 1 | controller_node |
+| search_speed | 0.3 | controller_node |
+| center_tol | 0.1 | controller_node |
+| k_ang | 1 | controller_node |
+| max_ang | 0.8 | controller_node |
+| forward_speed | 0.15 | controller_node |
+| approach_gain | 0.5 | controller_node |
+| stop_area | 0.12 | controller_node |
+| stop_range_m | 0.35 | controller_node |
+| trial_timeout_s | 60 | controller_node |
+| front_cone_deg | 15 | controller_node |
+| log_hz | 10 | trial_logger_node |
+| qos_depth | 10 | trial_logger_node |
+| trials_dir | "" | trial_logger_node |
+| path_max_poses | 6000 | trial_logger_node |
+| json_retry_s | 0.5 | trial_logger_node |
+| json_retries | 10 | trial_logger_node |
+| front_cone_deg | 15 | trial_logger_node |
+| room_size_m | 6 | beacon_shared |
+| wall_thickness_m | 0.2 | beacon_shared |
+| wall_height_m | 0.5 | beacon_shared |
+| box_size_m | 0.4 | beacon_shared |
+| box1_x | 1 | beacon_shared |
+| box1_y | 0.8 | beacon_shared |
+| box2_x | -1.2 | beacon_shared |
+| box2_y | -0.9 | beacon_shared |
+| marker_radius_m | 0.075 | beacon_shared |
+| marker_height_m | 0.3 | beacon_shared |
+| camera_hfov_deg | 62.2 | beacon_shared |
+| n_trials | 10 | beacon_shared |
+| occluded_trials | 2 | beacon_shared |
+| dist_min_m | 1 | beacon_shared |
+| dist_max_m | 2.5 | beacon_shared |
+| clearance_m | 0.4 | beacon_shared |
+| occlusion_extra_dist_min_m | 0.8 | beacon_shared |
+| occlusion_extra_dist_max_m | 1.1 | beacon_shared |
+| default_seed | 42 | beacon_shared |
+| spawn_settle_s | 1 | beacon_shared |
+| service_timeout_s | 10 | beacon_shared |
+| marker_entity_name | red_marker | beacon_shared |
 
 ## Topics
 
