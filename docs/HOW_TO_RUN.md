@@ -129,7 +129,7 @@ Save them in `docs/screenshots`. Suggested set:
 
 * `gazebo_room.png`: the Gazebo window with the room, both boxes, the robot and a marker.
 * `rviz_overview.png`: RViz with the LaserScan, robot model, path and debug image panel.
-* `debug_search.png`, `debug_align.png`, `debug_approach.png`, `debug_stop.png`: the debug image in each state. Set `save_frames: true` in `params.yaml` to have the detector write a PNG on every state change into `<trials_dir>/frames`.
+* `debug_search.png`, `debug_align.png`, `debug_approach.png`, `debug_stop.png`: one debug image per state. The detector writes a PNG on every state change into `docs/screenshots/frames`. `python3 scripts/pick_frames.py` copies one frame of trial 1 for each state into `docs/screenshots`.
 * `terminal_reached.png`: the controller terminal showing the `reached:` line and the run_trial.sh output with the results row.
 
 Take screenshots on the host desktop. `docs/screenshot_list.md` lists each one. For the debug image, `rqt_image_view` has a save button.

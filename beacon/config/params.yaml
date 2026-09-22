@@ -18,8 +18,8 @@ detector_node:
     log_period_s: 1.0
     fps_window: 30
     # Frame saving. Empty save_dir means <trials_dir>/frames.
-    save_frames: false
-    save_dir: ""
+    save_frames: true
+    save_dir: docs/screenshots/frames
     save_period_s: 1.0
     trials_dir: ""
     # Debug image layout. Colours are BGR.

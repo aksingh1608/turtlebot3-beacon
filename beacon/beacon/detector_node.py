@@ -16,6 +16,7 @@ from std_msgs.msg import String
 
 from beacon.ros_util import T, declare_typed, latched_qos, now_s, read_params
 from beacon.spawn_marker import resolve_trials_dir
+from beacon.trial_rules import frame_filename, resolve_save_dir
 from beacon.vision import detect_marker, draw_debug
 
 VISION_SPEC = {
@@ -59,7 +60,7 @@ class DetectorNode(Node):
         self.stamps = deque(maxlen=int(cfg['fps_window']))
         self.save_frames = bool(cfg['save_frames'])
         self.save_period_s = float(cfg['save_period_s'])
-        self.save_dir = cfg['save_dir'] or os.path.join(resolve_trials_dir(cfg['trials_dir']), 'frames')
+        self.save_dir = resolve_save_dir(cfg['save_dir'], resolve_trials_dir(cfg['trials_dir']))
         self.save_next = False
         self.last_save_s = -1.0
         if self.save_frames:
@@ -118,7 +119,7 @@ class DetectorNode(Node):
         periodic = self.state == 'APPROACH' and (t - self.last_save_s) >= self.save_period_s
         if not (self.save_next or periodic):
             return
-        name = 'trial%s_%08.2fs_%s.png' % (self.trial_id, t, self.state)
+        name = frame_filename(self.trial_id, self.state, t)
         cv2.imwrite(os.path.join(self.save_dir, name), debug)
         self.save_next = False
         self.last_save_s = t

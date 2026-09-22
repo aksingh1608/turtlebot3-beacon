@@ -48,8 +48,8 @@ All of them live in `beacon/config/params.yaml`. The table below is the output o
 | center_tol | 0.1 | detector_node |
 | log_period_s | 1 | detector_node |
 | fps_window | 30 | detector_node |
-| save_frames | false | detector_node |
-| save_dir | "" | detector_node |
+| save_frames | true | detector_node |
+| save_dir | docs/screenshots/frames | detector_node |
 | save_period_s | 1 | detector_node |
 | trials_dir | "" | detector_node |
 | debug_top_px | 40 | detector_node |
