@@ -43,7 +43,7 @@ def setup(context, *args, **kwargs):
     gzserver = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),
         # init and factory load libgazebo_ros_init.so and libgazebo_ros_factory.so,
-        # which provide /reset_world and /spawn_entity. CONFIRM IN ROSJECT.
+        # which provide /reset_world and /spawn_entity. CONFIRM IN SIM.
         launch_arguments={'world': world, 'init': 'true', 'factory': 'true'}.items())
 
     gzclient = IncludeLaunchDescription(

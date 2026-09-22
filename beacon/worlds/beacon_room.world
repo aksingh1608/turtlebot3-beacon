@@ -8,7 +8,7 @@
   system plugins libgazebo_ros_init.so and libgazebo_ros_factory.so.
   Gazebo loads system plugins from the gzserver command line, not from a
   world file, so launch/sim.launch.py passes init:=true and factory:=true
-  to gazebo_ros gzserver.launch.py. CONFIRM IN ROSJECT.
+  to gazebo_ros gzserver.launch.py. CONFIRM IN SIM.
 -->
 <sdf version="1.6">
   <world name="beacon_room">

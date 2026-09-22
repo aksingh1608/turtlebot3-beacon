@@ -2,8 +2,6 @@
 
 Beacon is a vision guided TurtleBot3 simulation. A Waffle Pi in Gazebo Classic looks for a red cylinder with its camera, turns until the cylinder sits in the centre of the frame, drives towards it and stops in front of it. Ten scripted trials place the marker at different distances and bearings, two of them partly hidden behind a box, and a logger records every run for analysis.
 
-ROSject name: ROSJECT_NAME_TBD
-
 ## Assignment mapping
 
 | Part | What Beacon does | Where |

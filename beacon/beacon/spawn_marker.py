@@ -1,6 +1,6 @@
 """Spawn the red marker for one trial and announce the trial id.
 
-Usage (inside the ROSject):
+Usage (inside the container, or on a Humble install):
     ros2 run beacon spawn_marker --trial 3
     ros2 run beacon spawn_marker --x 1.5 --y -0.8
     ros2 run beacon spawn_marker --random-seed 7
