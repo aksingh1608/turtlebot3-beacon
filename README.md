@@ -211,15 +211,89 @@ Success rate 50%. Mean time to reach 14.9 s, max 26.9 s. Mean final range on a r
 
 ## Figures
 
-`python3 scripts/analyze_trials.py` reads `results.csv` and the per trial logs and writes to `docs/figures`:
+`python3 scripts/analyze_trials.py` reads `results.csv` and the per trial logs and writes these images to `docs/figures`. It also prints the success rate, the mean and max time to reach, and the mean final range.
 
-* `paths_topdown.png`: room, boxes, markers and every robot path.
-* `time_to_reach.png`: time to STOP per trial, failures marked.
-* `state_timeline.png`: SEARCH, ALIGN, APPROACH and STOP segments per trial.
-* `offset_vs_time.png`: the horizontal offset of every trial with the centre band shaded.
-* `results_table.png`: the results table as an image.
+### Paths
 
-It also prints the success rate, the mean and max time to reach, and the mean final range.
+![top down paths](docs/figures/paths_topdown.png)
+
+The room, the two boxes, every marker, and the path of each trial.
+
+### Time to reach
+
+![time to reach](docs/figures/time_to_reach.png)
+
+Time to STOP for each trial. A miss is marked as a failure.
+
+### State timeline
+
+![state timeline](docs/figures/state_timeline.png)
+
+SEARCH, ALIGN, APPROACH, and STOP for each trial.
+
+### Offset
+
+![offset versus time](docs/figures/offset_vs_time.png)
+
+Horizontal offset of each trial. The shaded band is the centre tolerance.
+
+### Results image
+
+![results figure](docs/figures/results_table.png)
+
+The same results table drawn as a figure.
+
+## Screenshots
+
+Taken on the host during the container run. The four debug images are trial 1 frames chosen by `scripts/pick_frames.py`.
+
+### Gazebo
+
+![gazebo room](docs/screenshots/gazebo_room.png)
+
+The room, both boxes, and the robot. The red marker is in the model list. The lidar fan covers the centre of the view.
+
+### RViz
+
+![rviz overview](docs/screenshots/rviz_overview.png)
+
+Laser scan of the walls, the robot model, and the path display, with global status ok.
+
+### Debug image in each state
+
+![debug search](docs/screenshots/debug_search.png)
+
+SEARCH.
+
+![debug align](docs/screenshots/debug_align.png)
+
+ALIGN.
+
+![debug approach](docs/screenshots/debug_approach.png)
+
+APPROACH.
+
+![debug stop](docs/screenshots/debug_stop.png)
+
+STOP.
+
+### Topic list
+
+![topic list](docs/screenshots/topic_list.png)
+
+Topics while the simulation was running, including `/camera/image_raw`, `/scan`, `/odom`, and the `/beacon` topics.
+
+### Camera rate
+
+![camera rate](docs/screenshots/camera_hz.png)
+
+`/camera/image_raw` published at about 28 frames a second.
+
+### Results printout
+
+![results printout](docs/screenshots/results_table.png)
+
+`beacon/trials/results.csv` printed in the container after the ten trials.
 
 ## Tests
 
