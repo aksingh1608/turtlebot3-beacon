@@ -97,16 +97,16 @@ ros2 run rqt_image_view rqt_image_view /beacon/debug_image
 
 or the DebugImage panel in RViz. The left half is the camera frame with the contour, centroid, bounding box, centre line and the shaded centre band. The right half is the red mask. The top strip shows the state, offset, area fraction and fps. The bottom bar shows the offset from -1 to +1.
 
-Where the logs land: by default in the installed package share folder, which is
+Where the logs land: by default in the source tree, in the trials folder of the beacon package you copied into the workspace:
 
 ```
-$(ros2 pkg prefix beacon)/share/beacon/trials
+~/ros2_ws/src/beacon/trials
 ```
 
-so `logs/trial_1.csv`, `results.csv` and `current_trial.json` sit next to `positions.csv`. To keep them in the source tree instead, set this in every terminal before launching:
+so `logs/trial_1.csv`, `results.csv` and `current_trial.json` sit next to `positions.csv`. This is the package source, not the install prefix. To send them somewhere else, set this in every terminal before launching:
 
 ```
-export BEACON_TRIALS_DIR=~/ros2_ws/src/beacon/trials
+export BEACON_TRIALS_DIR=/path/you/choose
 ```
 
 The launch argument `trials_dir:=` does the same for the nodes.
@@ -115,7 +115,7 @@ The launch argument `trials_dir:=` does the same for the nodes.
 
 ```
 for n in $(seq 1 10); do scripts/run_trial.sh "$n"; done
-python3 scripts/analyze_trials.py --trials-dir "$(ros2 pkg prefix beacon)/share/beacon/trials"
+python3 scripts/analyze_trials.py --trials-dir ~/ros2_ws/src/beacon/trials
 ```
 
 If you set `BEACON_TRIALS_DIR`, the script reads it and you can drop the flag. Figures land in `docs/figures`. The script prints the success rate, mean and max time to reach, and mean final range. `results.csv` keeps every run. If you repeat a trial, the last row for that trial number is the one plotted.

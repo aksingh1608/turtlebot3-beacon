@@ -8,3 +8,4 @@ CLAUDE.md
 .claude/
 .cursor/
 docs/screenshots/*.tmp
+trials/current_trial.json

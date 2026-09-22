@@ -41,17 +41,38 @@ def load_shared_params(share_dir=None):
     return data['beacon_shared']['ros__parameters']
 
 
+def source_package_root():
+    """Package directory in the source tree, the folder that holds trials/.
+
+    realpath follows a symlink install back to the checkout. A plain copy
+    under an install prefix is matched to <workspace>/src/beacon when that
+    checkout exists.
+    """
+    here = os.path.realpath(os.path.abspath(__file__))
+    root = os.path.dirname(os.path.dirname(here))
+    marker = os.path.join('trials', 'positions.csv')
+    if os.path.isfile(os.path.join(root, marker)):
+        return root
+    parts = here.split(os.sep)
+    if 'install' in parts:
+        workspace = os.sep.join(parts[:parts.index('install')]) or os.sep
+        src = os.path.join(workspace, 'src', 'beacon')
+        if os.path.isfile(os.path.join(src, marker)):
+            return src
+    return root
+
+
 def resolve_trials_dir(explicit=''):
     """Where positions.csv, logs and results live.
 
-    Order: explicit argument, BEACON_TRIALS_DIR, then <share>/trials.
+    Order: explicit argument, BEACON_TRIALS_DIR, then trials/ in the source tree.
     """
     if explicit:
         return os.path.abspath(os.path.expanduser(explicit))
     env = os.environ.get('BEACON_TRIALS_DIR', '')
     if env:
         return os.path.abspath(os.path.expanduser(env))
-    return os.path.join(find_share_dir(), 'trials')
+    return os.path.join(source_package_root(), 'trials')
 
 
 def wrap_deg(a):

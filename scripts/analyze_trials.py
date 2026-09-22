@@ -5,7 +5,7 @@ Reads trials/results.csv and trials/logs/*.csv, writes five PNG figures to
 docs/figures and prints summary numbers. Headless: matplotlib only, Agg.
 
     python3 scripts/analyze_trials.py
-    python3 scripts/analyze_trials.py --trials-dir ~/ros2_ws/install/beacon/share/beacon/trials
+    python3 scripts/analyze_trials.py --trials-dir ~/ros2_ws/src/beacon/trials
 """
 
 import argparse

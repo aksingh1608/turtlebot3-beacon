@@ -7,7 +7,7 @@
 # Environment overrides:
 #   BEACON_WS          workspace root, default ~/ros2_ws
 #   BEACON_TRIALS_DIR  folder with positions.csv, logs and results.csv
-#                      default <install prefix>/share/beacon/trials
+#                      default: trials/ in the package source tree
 #   BEACON_WAIT_S      seconds to wait for STOP or TIMEOUT, default 90
 #
 # The simulation must already be running: ros2 launch beacon sim.launch.py
@@ -28,7 +28,16 @@ source /opt/ros/humble/setup.bash
 # shellcheck disable=SC1091
 source "$WS/install/setup.bash"
 
-TRIALS_DIR="${BEACON_TRIALS_DIR:-$(ros2 pkg prefix beacon)/share/beacon/trials}"
+# Same default as the nodes: the source tree trials folder, not the install prefix.
+if [ -n "${BEACON_TRIALS_DIR:-}" ]; then
+  TRIALS_DIR="$BEACON_TRIALS_DIR"
+else
+  TRIALS_DIR="$(python3 -c 'from beacon.spawn_marker import resolve_trials_dir; print(resolve_trials_dir())' 2>/dev/null || true)"
+  if [ -z "$TRIALS_DIR" ]; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    TRIALS_DIR="$(cd "$SCRIPT_DIR/../beacon/trials" && pwd)"
+  fi
+fi
 
 echo "== trial $N (trials dir: $TRIALS_DIR)"
 ros2 run beacon spawn_marker --trial "$N" --trials-dir "$TRIALS_DIR"
